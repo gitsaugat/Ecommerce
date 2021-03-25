@@ -1,0 +1,28 @@
+{% extends 'products/base.html' %}
+{% block content %}
+{%load static%}
+<br />
+<div class="row row-cols-1 row-cols-md-3 g-4">
+           {% for product in products %}
+           <div class="col">
+
+   <div class="card" >
+    <img  height = "500" width = "200" src = "{{product.image.url}}" class="card-img-top" alt="...">
+    <div class="card-body">
+      <h5 class="card-title">{{ product.title }}</h5>
+      <p class="card-text">{{ product.description }}</p>
+      <div class = "d-flex justify-content-between">
+      <a href="#" class="btn btn-success"> $400 </a>
+        <button data-product="{{product.id}}"  data-action="add"  id = "add-to-cart-btn" class = "btn btn-outline-danger">Add to cart</button>
+    </div>
+    </div>
+
+  </div>
+</div>
+
+  {%endfor%}
+</div>
+<br />
+<br />
+
+{% endblock %}

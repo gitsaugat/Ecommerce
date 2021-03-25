@@ -1,0 +1,48 @@
+{% extends 'products/base.html' %}
+{%load static%}
+{%block content%}
+
+<table class="table table-bordered">
+    <tr>
+        <th scope="row">Total</th>
+        <td style="text-align: center;" colspan="2">${{order.get_cart_total}}</td>
+        <td><a style="float:right;" href = "/checkout" class = "btn btn-danger float-right"> Checkout </a></td>
+     
+  </table>
+
+  <br />
+<br />
+
+<table class="table">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Items</th>
+        <th scope="col">Quantity</th>
+        <th scope="col"> Control</th>
+        <th scope="col">Total</th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for i in items%} 
+        {% if i.quantity > 0%}
+
+      <tr>
+        <th scope="row">{{i.id}}</th>
+        <td><img height="40" width="40" src = "{{i.product.get_image_URI}}"> &nbsp;<b>{{i.product.title}}</b></td>
+
+        <td class = "">{{i.quantity}}  </td>
+        <td><span style="cursor: pointer;" id = "add-to-cart-btn" data-action = "remove" data-product = "{{i.product.id}}" > ⬇️ </span> <span style="cursor: pointer;" id = "add-to-cart-btn" data-action = "add" data-product = "{{i.product.id}}"> ⬆️ </span>
+        </td>
+        <td>${{i.get_total}}</td>
+      </tr>
+      {%endif%}
+      {%endfor%}
+      
+    </tbody>
+  </table>
+
+    
+  
+   
+{%endblock%}
