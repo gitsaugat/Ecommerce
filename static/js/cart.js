@@ -1,5 +1,4 @@
 const add_btns = document.querySelectorAll('#add-to-cart-btn')
-const form = document.getElementById("checkout-form")
 console.log(add_btns)
 
 for( let i = 0; i < add_btns.length; i++ )
@@ -38,7 +37,3 @@ const updateOrder = (pk , action) => {
         .then( data => location.reload() )
 }
 
-form.addEventListener('submit' , function(e) {
-    e.preventDefault()
-    console.log(form.data)
-})

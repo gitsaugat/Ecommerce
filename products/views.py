@@ -1,7 +1,9 @@
 from django.shortcuts import render
 from django.http import HttpResponse , JsonResponse
-from .models import Product , Order  ,OrderItem
+from .models import Product , Order  ,OrderItem , ShippingInfo
 import json
+import random
+import time
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages 
 # Create your views here.
@@ -19,7 +21,7 @@ def cart(request):
     
     if request.user.is_authenticated:
         customer = request.user 
-        order , created = Order.objects.get_or_create( customer = customer )
+        order , created = Order.objects.get_or_create( customer = customer , completed=not True )
         order_items = order.orderitem_set.all()
     else:
         order_items = []
@@ -32,7 +34,7 @@ def cart(request):
 def checkout(request):
     if request.user.is_authenticated:
         customer = request.user 
-        order , created = Order.objects.get_or_create( customer = customer )
+        order , created = Order.objects.get_or_create( customer = customer , completed=not True )
         order_items = order.orderitem_set.all()
     else:
         order_items = []
@@ -61,3 +63,34 @@ def updateOrder(request):
 
 
     return JsonResponse( 'Created' , safe=False )
+@login_required
+def processOrder(request):
+    time.sleep(1)
+    requested_data = json.loads( request.body )
+    print(requested_data)
+    order , created = Order.objects.get_or_create( customer= request.user , completed = not True )
+    order.completed = True
+    order.transaction_id = random.random()
+    order.save()
+    if requested_data:
+        ShippingInfo.objects.create(
+        customer = request.user,
+        order= order ,
+        address = requested_data['dataonHold']['address'],
+        city = requested_data['dataonHold']['city'],
+        state = requested_data['dataonHold']['state'],
+        postalcode=requested_data['dataonHold']['zip'],
+        )
+    return JsonResponse(requested_data , safe= not True)
+
+    
+
+    # return JsonResponse( "lol", safe = False )
+
+
+
+     
+
+     
+
+    
