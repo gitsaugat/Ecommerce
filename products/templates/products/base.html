@@ -59,18 +59,21 @@
                 <a class="btn btn-danger nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                   Howdy <b>{{ request.user.username }}</b>
                 </a>
-                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
                   {%if request.user.is_authenticated%}
+                  <ul class=" navbar-nav dropdown-menu" aria-labelledby="navbarDropdown">
                   <li><a class="dropdown-item" href="/user">Profile</a></li>
                   <li><hr class="dropdown-divider"></li>
                   <li><a class="dropdown-item" href="/logout">Logout</a></li>
+                  </ul>
                   {%else%}
+                  <ul class="navbar-nav dropdown-menu" aria-labelledby="navbarDropdown">
                   <li><a class="dropdown-item" href="/register/user">Register</a></li>
                   <li><a class="dropdown-item" href="/login/user">Login</a></li>
                   <li><hr class="dropdown-divider"></li>
                   <li><a class="dropdown-item" href="#">Something else here</a></li>
+                  </ul>
                   {%endif%}
-                </ul>
               </li>
               </ul>
               &nbsp;&nbsp;
