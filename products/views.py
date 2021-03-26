@@ -1,11 +1,13 @@
 from django.shortcuts import render , redirect
 from django.http import HttpResponse , JsonResponse
-from .models import Product , Order  ,OrderItem , ShippingInfo
+from .models import Product , Order  ,OrderItem , ShippingInfo , Activity
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages 
+from .utils import createActivity
 import json
 import random
 import time
-from django.contrib.auth.decorators import login_required
-from django.contrib import messages 
+
 # Create your views here.
 def homeview(request):
     
@@ -13,6 +15,7 @@ def homeview(request):
         "title" : "Home",
         "products" : Product.objects.all( )
     }
+    
     return render( request , 'products/home.html' , context  )
 
 @login_required
@@ -51,6 +54,7 @@ def updateOrder(request):
     if action == 'add':
         orderItem.quantity = orderItem.quantity+1
         messages.success(request, f'Added' )
+        
 
     elif action == "remove":
         orderItem.quantity = orderItem.quantity-1  
@@ -83,15 +87,42 @@ def processOrder(request):
             state = requested_data['dataonHold']['state'],
             postalcode=requested_data['dataonHold']['zip'],
         )
+        createActivity( request.user , f' Howdy , you made an order successfully which is worth of ${ str(order.get_cart_total) } ' )
     else:
         print("cannot do anything")
 
     return JsonResponse( "lol", safe = False )
 
 
+def typewise(request , typeof):
+    anothertype = ""
+    if typeof == "shirt":
+        anothertype = "SH"
+    elif typeof == "shoes":
+        anothertype = "SO"
+    elif typeof == "jackets":
+        anothertype = "JK"
+    elif typeof == "bags":
+        anothertype = "BG"
+    elif typeof == "piants":
+        anothertype = "PT"
+    else:
+        anothertype = None
 
-     
 
-     
+    context = {
+        'products' : Product.objects.filter( category = anothertype )
+    }
+    if context['products']:
+        print(context)
+    else:
+        print("not found")
+    return render( request , 'products/products.html' , context   )
 
-    
+
+def activityPage(request):
+    context = {
+        'activities' : Activity.objects.filter( user = request.user )
+    }
+
+    return render( request , 'products/activity.html' , context )

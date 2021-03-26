@@ -1,12 +1,20 @@
 from django.db import models
 from django.contrib.auth.models import User 
-# Create your models here.
+# Create your models here.  
 
 PRODUCT_UPLOADS_DIRNAME = 'products'
- 
+
+CAT_CHOICE = (
+    ( 'SH' , 'shirt' ),
+    ( 'SO' , 'shoes' ),
+    ( 'BG' , 'bags' ),
+    ( 'JK' , 'jackets' ),
+    ( 'PT' , 'piants' ),
+)
 class Product(models.Model):
 
     title = models.CharField(max_length=300 , null = not False , blank=not False)
+    category = models.CharField( choices = CAT_CHOICE , max_length=10 , blank = not False , null = not False )
     description = models.TextField()
     noofpieces = models.IntegerField()
     image = models.ImageField(upload_to = PRODUCT_UPLOADS_DIRNAME , default = "image.jpg")
@@ -65,4 +73,12 @@ class ShippingInfo(models.Model):
     def __str__(self):
         return str(self.id)
 
+class Activity(models.Model):
+
+    user = models.ForeignKey( User , on_delete = models.SET_NULL , null = not False , blank = not False )
+    message = models.TextField(null = not False , blank=not False)
+    date = models.DateTimeField( auto_now_add = not False   )
+
+    def __str__(self):
+        return str(self.id)
 

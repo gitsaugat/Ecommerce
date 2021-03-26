@@ -4,12 +4,16 @@ from .views import (
     cart,
     checkout,
     updateOrder,
-    processOrder
+    processOrder,
+    typewise,
+    activityPage
 )
 urlpatterns = [
     path('' , homeview , name = "homeview" ),
     path('cart/' , cart  , name = "cartview" ),
     path('checkout/' ,checkout , name = "checkoutview" ),
     path('updateitem/' , updateOrder , name = "updateorder"),
-    path('processorder/' , processOrder , name = "processorder" )
+    path('processorder/' , processOrder , name = "processorder" ),
+    path('products/<str:typeof>/', typewise , name = "typewise"),
+    path('activity/' , activityPage , name = "activity")
 ]

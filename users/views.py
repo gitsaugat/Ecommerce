@@ -9,6 +9,7 @@ def register_user(request):
     if request.method == "POST":
         form = UserRegistrationForm(request.POST)
         if form.is_valid():
+            form.save()
             username = form.cleaned_data.get("username").upper()
             messages.success(request, f'Account for {username} was successfully created' )
             return redirect('/')

@@ -1,8 +1,4 @@
-
 const form = document.getElementById("checkout-form")
-
-
-
 var reqyested_data = {}
  
 form.addEventListener('submit' , (e) => {
@@ -36,11 +32,10 @@ paypal.Buttons({
                 }
             )
             alert("Transaction Completed")
+            location.reload()
 
         });
     }
-
-
 }).render('#paypal-button-container');
 
 
